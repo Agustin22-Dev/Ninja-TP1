@@ -12,9 +12,10 @@ export default class Game extends Phaser.Scene {
     this.score = 0;
     this.shapes = {
       diamante: {points: 10, count:0},
-      esmeralda: { points: 20, count:0}
-    }
-
+      esmeralda: { points: 20, count:0},
+      ruby:{points: 30, count:0},
+      bomb:{points: -10, count:0}
+    };
   }
 
   preload() {
@@ -24,6 +25,8 @@ export default class Game extends Phaser.Scene {
     this.load.image("platform","./public/assets/platform.png")
     this.load.image("diamante","./public/assets/diamante.png")
     this.load.image("esmeralda","./public/assets/esmeralda.png")
+    this.load.image("bomb","./public/assets/bomb.png")
+    this.load.image("ruby","./public/assets/ruby.png")
    
   }
  
@@ -82,7 +85,8 @@ export default class Game extends Phaser.Scene {
     50,
     `Puntaje: ${this.score}
       D: ${this.shapes["diamante"].count}
-      E: ${this.shapes["esmeralda"].count}`);
+      E: ${this.shapes["esmeralda"].count}
+      R: ${this.shapes["ruby"].count}`);
 
   //evento 1 seg
   this.time.addEvent({
@@ -108,7 +112,8 @@ export default class Game extends Phaser.Scene {
     this.scoreText.setText(
       `puntaje:${this.score}
       D:${this.shapes["diamante"].count}
-      E:${this.shapes["esmeralda"].count}`
+      E:${this.shapes["esmeralda"].count}
+      R:${this.shapes["ruby"].count}`
     );
     this.checkWin();
   }
@@ -118,7 +123,8 @@ export default class Game extends Phaser.Scene {
     const cumplePuntos= this.score >= 100;
     const cumpleFiguras=
     this.shapes["diamante"].count >= 2 &&
-    this.shapes["esmeralda"].count >= 2 
+    this.shapes["esmeralda"].count >= 2 &&
+    this.shapes["ruby"].count >= 2
 
     if(cumplePuntos && cumpleFiguras){
       console.log("Ganaste");
@@ -156,7 +162,7 @@ export default class Game extends Phaser.Scene {
       return;
     }
     // crear recolectable
-    const tipos = ["diamante","esmeralda"];
+    const tipos = ["diamante","esmeralda","ruby","bomb"];
 
     const tipo = Phaser.Math.RND.pick(tipos);
     let recolectable = this.recolectables.create(
